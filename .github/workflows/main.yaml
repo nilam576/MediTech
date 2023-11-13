@@ -8,27 +8,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -e {0}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Docker
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: docker/setup-docker@v2
         with:
-          node-version: '16'
+          dockerfile: Dockerfile
+          context: .
 
       - name: Build Docker image
         run: docker build -t nilu12/flask-app:latest .
 
-      - name: Push Docker image to DockerHub
-        run: docker push nilu12/flask-app:latest
+      - name: Set up Docker
+        run: |
+          docker build -t nilu12/flask-app:latest .
+          docker push nilu12/flask-app:latest
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
