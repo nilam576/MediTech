@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cancer Diagnosis Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .result {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancer Diagnosis Predictor</h1>
+    <div class="container">
+        <form action="/predict" method="post">
+            <label for="radius_mean">Radius Mean:</label>
+            <input type="text" name="radius_mean" id="radius_mean">
+
+            <label for="texture_mean">Texture Mean:</label>
+            <input type="text" name="texture_mean" id="texture_mean">
+
+            <!-- Add more input fields here as needed -->
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <!-- Display result on the 'result.html' page -->
+    {% if prediction %}
+    <div class="result">
+        <h2>Prediction:</h2>
+        <p>The diagnosis is: {{ prediction }}</p>
+        <p><a href="/result">View detailed result</a></p>
+    </div>
+    {% endif }
+</body>
+</html>
