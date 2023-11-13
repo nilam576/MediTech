@@ -22,8 +22,11 @@ jobs:
       - name: Build Docker image
         run: docker build -t your-dockerhub-username/flask-app:latest .
 
-      - name: Push Docker image to DockerHub
-        run: docker push your-dockerhub-username/flask-app:latest
+      - name: Set up Docker
+        run: |
+          docker build -t nilu12/flask-app:latest .
+          docker push nilu12/flask-app:latest
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
