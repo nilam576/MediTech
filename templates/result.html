@@ -19,8 +19,37 @@
     </style>
 </head>
 <body>
-    <h1>Cancer Diagnosis Result</h1>
-    <p>The diagnosis is: {{ prediction }}</p>
+    <h1 style="font-size:40px">Cancer Diagnosis Result</h1>
+    <p style="font-size:30px; color:red;">The diagnosis is: {{ prediction }}</p>
+    <br>
+    <p style="font-size:30px; color:red;"><a href="/chatbot">Know more about Breast Cancer</p>
+    <br>
+    <br>
+    
+    <!-- Add image for ROC curve -->
+    <img src="/static/roc_curve.png" alt="ROC Curve" style="max-width:500px;">
+
+    <br>
+    <br>
+    <!-- Add image for confusion matrix -->
+    <img src="/static/confusion_matrix.png" alt="Confusion Matrix" style="max-width: 500px;">
+    <br>
+    <br>
+    <!-- Histograms -->
+    <img src="{{ url_for('static', filename='histograms.png') }}" alt="Histograms" style="max-width: 500px;">
+    <br>
+    <br>
+    <!-- Precision-Recall Curve -->
+    <img src="{{ url_for('static', filename='precision_recall_curve.png') }}" alt="Precision-Recall Curve" style="max-width: 500px;">
+    <br>
+    <br>
+    <!-- Feature Importance Chart -->
+    <img src="{{ url_for('static', filename='feature_importance.png') }}" alt="Feature Importance Chart" style="max-width: 500px;">
+    <br>
+    
+    <br>
+
     <p><a href="/">Go back to input page</a></p>
 </body>
 </html>
+
