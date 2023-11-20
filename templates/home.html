@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MediTech - Breast Cancer Awareness</title>
+    <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+    <div>
+    <h1 class="heading">MediTech</h1></div>
+    <div class="slider">
+        <div class="slides">
+            <img src="https://www.doconline.com/assets/image/blog/breast-cancer.jpg" alt="Breast Cancer Image 1"  >
+            <img src="https://onphospitals.com/wp-content/uploads/2021/11/breast-cancer.jpg" alt="Breast Cancer Image 2"  >
+            <img src="https://images-prod.healthline.com/hlcmsresource/images/BreastCancerQuote/images/hlbcq-image12.jpg" alt="Breast Cancer Image 3"  >
+            <img src="https://previews.123rf.com/images/cienpies/cienpies2009/cienpies200900191/155532153-cancer-awareness-pink-quote-set-powerful-inspirational-words-and-motivation-messages-for-female.jpg" alt="Breast Cancer Image 4"  >
+        </div>
+        <div class="next-page">
+            <p>Empower Yourself with Knowledge</p>
+            <p>Explore our Breast Cancer Prediction Model</p>
+            <a href="index.html">Predict Breast Cancer</a>
+        </div>
+    </div>
+    <div class="meditech-info">
+        <h2>About MediTech</h2>
+        <p>MediTech is committed to revolutionizing breast cancer awareness through innovative technology and reliable predictive models. Our mission is to empower individuals by providing accurate predictions and valuable insights into breast cancer risks.</p>
+    </div>
+
+    <div class="doctors-section">
+        <h2>Contact Our Doctors</h2>
+        <div class="doctors">
+            <div class="doctor-card">
+                <img src="https://d3b6u46udi9ohd.cloudfront.net/wp-content/uploads/2017/02/09073153/RAJEEVAGARWAL.jpg" alt="Doctor 1">
+                <p>Dr. Rajeev Agrawal</p>
+                <p>Email: Ragrawal@gmail.com</p>
+            </div>
+            <div class="doctor-card">
+                <img src="https://d3b6u46udi9ohd.cloudfront.net/wp-content/uploads/2021/12/24094237/Dr.-Niharika-Roy-.-Patna-e1640339063499.jpg" alt="Doctor 2">
+                <p>Dr. Niharika Roy</p>
+                <p>Email: niharikar@gmail.com</p>
+            </div>
+            <!-- Add more doctor cards as needed -->
+        </div>
+    </div>
+   
+
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slides img');
+        const slideCount = slides.length;
+
+        function showSlide(index) {
+            slides.forEach((slide) => {
+                slide.style.display = 'none';
+            });
+            slides[index].style.display = 'block';
+        }
+
+        function startSlider() {
+            setInterval(() => {
+                showSlide(currentSlide);
+                currentSlide = (currentSlide + 1) % slideCount;
+            }, 3000); // Change slide every 3 seconds (3000 milliseconds)
+        }
+
+        startSlider(); // Start the slideshow
+    </script>
+
+</body>
+</html>

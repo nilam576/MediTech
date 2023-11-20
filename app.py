@@ -1,6 +1,6 @@
 import pickle
 import numpy as np
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify 
 
 import os
 
@@ -25,10 +25,16 @@ feature_names = [
 @app.route('/chatbot')
 def chatbot():
     return render_template('chatbot.html')
+# Route for home.html
+@app.route('/home')
+def home_page():
+    return render_template('home.html', feature_names=feature_names)
+
+
 
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html', feature_names=feature_names)
 
 @app.route('/predict', methods=['POST'])
