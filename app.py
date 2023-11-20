@@ -1,13 +1,12 @@
 import pickle
 import numpy as np
 from flask import Flask, render_template, request, jsonify
-from google.cloud import dialogflow
+
 import os
 
 app = Flask(__name__)
 
-# Set your Google Cloud credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"sharp-fire-405218-3c0886101406.json"
+#
 
 # Load the pre-trained model
 model = pickle.load(open('cancer_model.pkl', 'rb'))
@@ -22,6 +21,11 @@ feature_names = [
     'smoothness_worst', 'compactness_worst', 'concavity_worst', 'concave_points_worst',
     'symmetry_worst', 'fractal_dimension_worst'
 ]
+# Route to serve the chatbot.html file
+@app.route('/chatbot')
+def chatbot():
+    return render_template('chatbot.html')
+
 
 @app.route('/')
 def home():
@@ -47,33 +51,37 @@ def predict():
         # For example, you might want to display the result on a new page
         return render_template('result.html', prediction=diagnosis)
 
+
+# Rule-based breast cancer chatbot function
+def get_response(user_input):
+    user_input = user_input.lower()
+    if 'breast cancer' in user_input:
+        return "Breast cancer is a type of cancer that forms in the cells of the breasts. It can occur in both men and women, but it's far more common in women."
+    elif 'symptoms' in user_input:
+        return "Common symptoms of breast cancer may include a lump in the breast, changes in breast size or shape, skin dimpling, nipple inversion, or nipple discharge."
+    elif 'risk factors' in user_input:
+        return "Risk factors for breast cancer include age, family history, genetic mutations (BRCA genes), obesity, alcohol consumption, and hormone replacement therapy."
+    elif 'diagnosis' in user_input:
+        return "Breast cancer diagnosis involves mammograms, biopsies, MRI, and other imaging tests to detect abnormalities and confirm the presence of cancerous cells."
+    elif 'treatment' in user_input:
+        return "Treatment options for breast cancer may include surgery, chemotherapy, radiation therapy, hormone therapy, targeted therapy, or a combination of these."
+    elif 'prevention' in user_input:
+        return "To lower the risk of breast cancer, maintain a healthy lifestyle, limit alcohol intake, exercise regularly, maintain a healthy weight, and consider regular screenings."
+    else:
+        return "I'm sorry, I might not have information on that specific topic related to breast cancer. Please ask another question."
+
+
 @app.route('/get_bot_response', methods=['POST'])
 def get_bot_response():
     user_message = request.form['user_message']
 
-    # Check if user_message is empty or None
     if not user_message:
         return jsonify({'bot_response': 'Please provide a valid input.'})
 
-    session_id = "unique-session-id"  # You can generate a unique session ID
-    project_id = "sharp-fire-405218"   # Replace with your Dialogflow project ID
-
-    client = dialogflow.SessionsClient()
-    session = client.session_path(project_id, session_id)
-
-    text_input = dialogflow.TextInput(text=user_message, language_code="en")
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-
-    bot_response = response.query_result.fulfillment_text
+    bot_response = get_response(user_message)
     return jsonify({'bot_response': bot_response})
 
-@app.route('/chatbot')  # Endpoint for serving chatbot.html
-def chatbot():
-    return render_template('chatbot.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+

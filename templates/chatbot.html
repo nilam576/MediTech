@@ -1,55 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
-    <!-- Add any additional styling if needed -->
-</head>
+    <!-- Add any CSS stylesheets or styling -->
+    <style>
+        /* Basic styling for chatbot */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .chat-container {
+            border: 1px solid #ccc;
+            max-height: 400px;
+            overflow-y: scroll;
+            padding: 10px;
+            background-color: #fff;
+            transition: max-height 0.5s ease;
+        }
+
+        .user-message {
+            text-align: right;
+            color: #4a90e2;
+            margin-bottom: 5px;
+            animation: fadeInRight 0.5s;
+        }
+
+        .bot-message {
+            text-align: left;
+            color: #32a852;
+            margin-bottom: 5px;
+            animation: fadeInLeft 0.5s;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            animation: slideInUp 0.5s;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            margin-right: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Keyframe animations */
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
 <body>
-    <div style="text-align: center; margin-top: 50px;">
-        <h1>Chatbot</h1>
-        <div>
-            <textarea id="userInput" rows="4" cols="50" placeholder="Type your message..."></textarea>
-            <br>
-            <button onclick="sendMessage()">Send</button>
-        </div>
-        <div id="chatbox" style="margin-top: 20px;"></div>
+    <h1>Chatbot</h1>
+    <div class="chat-container" id="chat-container">
+        <!-- Chat messages will appear here -->
     </div>
+    <form id="user-input-form">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button type="submit">Send</button>
+    </form>
+
 
     <script>
-        function sendMessage() {
-            var userInput = document.getElementById('userInput').value;
-            appendToChatbox('You: ' + userInput);
+        // JavaScript code to handle user input and chatbot responses
+        document.getElementById("user-input-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            sendMessage();
+        });
 
-            // Send user message to the server and receive the chatbot response
+        function sendMessage() {
+            var userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") {
+                return;
+            }
+
+            // Display user message in the chat container
+            displayMessage(userInput, "user-message");
+
+            // Send user message to the server to get chatbot response
+            getBotResponse(userInput);
+
+            // Clear the input field
+            document.getElementById("user-input").value = "";
+        }
+
+        function displayMessage(message, className) {
+            var chatContainer = document.getElementById("chat-container");
+            var messageDiv = document.createElement("div");
+            messageDiv.className = className;
+            messageDiv.innerText = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    function getBotResponse(userMessage) {
             fetch('/get_bot_response', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'user_message=' + userInput,
+                body: 'user_message=' + encodeURIComponent(userMessage),
             })
-                .then(response => response.json())
-                .then(data => {
-                    var botResponse = data.bot_response;
-                    appendToChatbox('Chatbot: ' + botResponse);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-            // Clear the user input field
-            document.getElementById('userInput').value = '';
+            .then(response => response.json())
+            .then(data => {
+                displayMessage(data.bot_response, "bot-message");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
-
-        function appendToChatbox(message) {
-            var chatbox = document.getElementById('chatbox');
-            chatbox.innerHTML += message + '<br>';
-        }
+        
     </script>
 </body>
-
 </html>
